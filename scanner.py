@@ -6,7 +6,7 @@ try:
 
 
     ##폴더 탐색해서 분석할 파일을 리스트로 만든 후 반환
-    def find_files(root_path, rules):
+    def find_files(root_path, detection_rules=None):
 
         #결과값으로 리턴할 리스트생성
         file_list = []
@@ -78,10 +78,10 @@ try:
 
     #위에 두 함수를 돌리고, 값을 반환할 함수
     ## main에서 여기를 실행시킴
-    def start_scan(path, detection_rules):
+    def start_scan(path, detection_rules=None):
 
         #main에서 받은 path를 가지고 탐색할 파일 찾는 함수 실행
-        file_list = find_files(path, detection_rules)
+        file_list = find_files(path, detection_rules=None)
 
         #find_files에서 받은 file_list를 가지고 취약점 스캔
         weak_point = read_file_code(file_list)
