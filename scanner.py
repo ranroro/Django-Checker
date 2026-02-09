@@ -66,8 +66,13 @@ try:
 
 
                     #sql 인젝션(임시) - f스트링 여부 & 중괄호 여부(변수 직접 삽입)
-                    if (("f'" in line) or ('f"' in line)) and (("{" in line) and ("}" in line)):
+                    elif (("f'" in clean_line) or ('f"' in clean_line)) and (("{" in clean_line) and ("}" in clean_line)):
                         list_data.append(["SQL Injection", full_path, line_number, "키워드가 쿼리에 직접 삽입되어 위험합니다."])
+                    
+                    #csrf
+                    elif "@csrf_exempt" in clean_line:
+                        list_data.append(["CSRF", full_path, line_number, "Token검사를 건너뛰게 되어 위험합니다."])
+
 
         
         return list_data
