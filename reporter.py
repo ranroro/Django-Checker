@@ -22,21 +22,19 @@ def generate(results):
             
             # 취약점 목록
             for idx, result in enumerate(results, 1):
-                rule_name, recommendation = result
+                vuln_name, file_name, line_no, code_line, full_path, recommendation = result
 
-                f.write(f"[{idx}] 취약점 종류: {rule_name}\n")
+                f.write(f"[{idx}] 취약점 종류: {vuln_name}\n")
+                f.write(f"- 파일명: {file_name}\n")
+                f.write(f"- 전체 경로: {full_path}\n")
+                f.write(f"- 라인 번호: {line_no}\n")
+                f.write("- 코드:\n")
+                f.write("```python\n")
+                f.write(code_line + "\n")
+                f.write("```\n")
                 f.write(f"- 조치 권고: {recommendation}\n")
                 f.write("\n" + "-" * 40 + "\n\n")
 
-                #f.write(f"[{idx}] 취약점 종류: {rule_name}\n")
-                #f.write(f"- 파일명: {result['file']}\n")
-                #f.write(f"- 라인 번호: {result['line']}\n")
-                #f.write("- 코드:\n")
-                #f.write("```python\n")
-                #f.write(result["code"])
-                #f.write("\n```\n")
-                #f.write(f"- 조치 권고: {recommendation}\n")
-                #f.write("\n" + "-" * 40 + "\n\n")
 
         print(f"[+] 보고서 생성 완료: {report_filename}")
 
