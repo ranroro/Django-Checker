@@ -28,18 +28,14 @@ try:
     
         try:
             # 규칙 불러오기 
-            #detection_rules = rules.get_rules()
+            detection_rules = rules.get_rules()
             # 스캐너 실행
             print(f"\n[*]'{path} 분석을 시작합니다...")
-            scan_results = scanner.start_scan(path, detection_rules=None)
+            scan_results = scanner.start_scan(path, detection_rules)
         
             # 리포터 실행
             if scan_results:
                 print(f"분석 완료. {len(scan_results)}개의 취약점 흔적을 발견했습니다.")
-
-                for row in scan_results:
-                    print(row)
-
                 reporter.generate(scan_results) # 결과 리스트를 리포터에 전달
                 print("보고서 생성이 완료되었습니다.")
             else:   

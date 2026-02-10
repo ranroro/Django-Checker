@@ -55,22 +55,23 @@ try:
 
                 
 
+                    #취약점, 파일이름, 줄번호, 코드, 전체 위치, 조치권고
 
                     #sql Injection
                     if re.search(detection_rules[0][1], clean_line):
-                        list_data.append([detection_rules[0][0], detection_rules[0][2]])
+                        list_data.append([detection_rules[0][0], file, line_number, clean_line, full_path, detection_rules[0][2]])
 
                     #stored XSS
                     elif re.search(detection_rules[1][1], clean_line):
-                        list_data.append([detection_rules[1][0], detection_rules[1][2]])
+                        list_data.append([detection_rules[1][0], file, line_number, clean_line, full_path, detection_rules[1][2]])
 
                     #파일 업로드 취약점
                     elif re.search(detection_rules[2][1], clean_line):
-                        list_data.append([detection_rules[2][0], detection_rules[2][2]])
+                        list_data.append([detection_rules[2][0], file, line_number, clean_line, full_path, detection_rules[2][2]])
                     
                     #csrf
                     elif re.search(detection_rules[3][1], clean_line):
-                        list_data.append([detection_rules[3][0], detection_rules[3][2]])
+                        list_data.append([detection_rules[3][0], file, line_number, clean_line, full_path, detection_rules[3][2]])
 
 
         

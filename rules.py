@@ -4,7 +4,6 @@ def get_rules():
 <<<<<<< Updated upstream
     #전에 정한대로 리스트로 관리
     return[]
-=======
     """
     [취약점 항목명, 정규표현식(Pattern), 조치 권고]
     """
