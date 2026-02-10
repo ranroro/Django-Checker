@@ -10,12 +10,9 @@ def generate(results):
     try:
         with open(report_filename, "w", encoding="utf-8") as f:
             # 제목
-            f.write("\n'''\n")
             f.write("========== 취약점 분석 결과 ==========")
-            f.write("'''\n\n")
-            f.write(f"- 생성 시각: {now}\n")
-            f.write(f"- 총 발견 취약점 수: {len(results)}건\n\n")
-            f.wirte("---\n\n")
+            f.write(f"탐지된 취약점 개수(총): {len(results)}건\n\n")
+            f.write("=" * 40 + "\n\n")
 
             # 취약점 없을 경우
             if not results:
@@ -24,14 +21,20 @@ def generate(results):
             
             # 취약점 목록
             for idx, item in enumerate(results, 1):
-                vuln, file, line, reason = item
+                rule_name, _, recommendation = result["rule"]
 
-                f.write(f"## {idx}.  {vuln}\n")
-                f.write(f"- 파일 경로: `{file}`\n")
-                f.write(f"- 라인 번호: {line}\n")
+                f.write(f"[{idx}] 취약점 종류: {rule_name}\n")
+                f.write(f"- 파일명: {result['file']}\n")
+                f.write(f"- 라인 번호: {result['line']}\n")
+                f.write("- 코드:\n")
+                f.write("```python\n")
+                f.write(result["code"])
+                f.write("\n```\n")
+                f.write(f"- 조치 권고: {recommendation}\n")
+                f.write("\n" + "-" * 40 + "\n\n")
 
 
-        return report_filename
+        print(f"[+] 보고서 생성 완료: {report_filename}")
 
     except Exception as e:
         print("[reporter error]", e)
