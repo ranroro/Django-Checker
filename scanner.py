@@ -1,4 +1,5 @@
 import os
+import re
 
 try:
     import main
@@ -6,7 +7,7 @@ try:
 
 
     ##폴더 탐색해서 분석할 파일을 리스트로 만든 후 반환
-    def find_files(root_path, detection_rules=None):
+    def find_files(root_path):
 
         #결과값으로 리턴할 리스트생성
         file_list = []
@@ -30,7 +31,7 @@ try:
 
 
     ##위의 함수에서 반환받은 리스트를 돌면서 파일을 하나씩 탐색
-    def read_file_code(file_list):
+    def read_file_code(file_list, detection_rules):
 
         #리턴할 취약점을 담은 리스트
         #형식은 [취약점, 파일 이름, 자세한 위치, 이유]
@@ -52,22 +53,26 @@ try:
                     #공백/줄바꿈 문자 제거
                     clean_line = line.rstrip()
 
-                    #규칙 적용해야됨. 
-                    #리스트에 저장할 때 full_path로 파일 이름이랑 주소 같이 저장해도 괜찮을 것 같음(의견)
+                
 
-                    #파일 업로드 취약점
-                    if "post.file_upload.read.decode" in clean_line:
-                        list_data.append(["file upload Vulnerability", full_path, line_number, "사용자가 올린 파일을 서버가 그대로 읽어서 브라우저에 출력되어 위험합니다."])
+                    #취약점, 파일이름, 줄번호, 코드, 전체 위치, 조치권고
 
+                    #sql Injection
+                    if re.search(detection_rules[0][1], clean_line):
+                        list_data.append([detection_rules[0][0], file, line_number, clean_line, full_path, detection_rules[0][2]])
 
                     #stored XSS
-                    elif "post.content|safe" in clean_line:
-                        list_data.append(["Stored XSS", full_path, line_number, "|safe는 게시글의 내용을 검사하지 않아 스크립트가 실행될 수 있어 위험합니다."])
+                    elif re.search(detection_rules[1][1], clean_line):
+                        list_data.append([detection_rules[1][0], file, line_number, clean_line, full_path, detection_rules[1][2]])
 
+                    #파일 업로드 취약점
+                    elif re.search(detection_rules[2][1], clean_line):
+                        list_data.append([detection_rules[2][0], file, line_number, clean_line, full_path, detection_rules[2][2]])
+                    
+                    #csrf
+                    elif re.search(detection_rules[3][1], clean_line):
+                        list_data.append([detection_rules[3][0], file, line_number, clean_line, full_path, detection_rules[3][2]])
 
-                    #sql 인젝션(임시) - f스트링 여부 & 중괄호 여부(변수 직접 삽입)
-                    if (("f'" in line) or ('f"' in line)) and (("{" in line) and ("}" in line)):
-                        list_data.append(["SQL Injection", full_path, line_number, "키워드가 쿼리에 직접 삽입되어 위험합니다."])
 
         
         return list_data
@@ -78,17 +83,17 @@ try:
 
     #위에 두 함수를 돌리고, 값을 반환할 함수
     ## main에서 여기를 실행시킴
-    def start_scan(path, detection_rules=None):
+    def start_scan(path, detection_rules):
 
         #main에서 받은 path를 가지고 탐색할 파일 찾는 함수 실행
-        file_list = find_files(path, detection_rules=None)
+        file_list = find_files(path)
 
         #find_files에서 받은 file_list를 가지고 취약점 스캔
-        weak_point = read_file_code(file_list)
+        weak_point = read_file_code(file_list, detection_rules)
 
         return weak_point
 
 
 
 except Exception as e:
-    print("[error] :", e) 
+    print("[scanner error] :", e) 
