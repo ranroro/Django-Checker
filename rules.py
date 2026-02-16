@@ -19,21 +19,21 @@ def get_rules():
         
         # 2. XSS 
         [
-            "XSS",
+            "XSS", 
             prefix + r".*?(?:(\|\s*safe\b)|(<\s*script(?![^>]*\bsrc\s*=)\b)|(\.replace\(.*<script>.*\)))",
             "|safe 필터 사용을 중단하고, <script> 태그 직접 삽입이나 단순 치환(replace) 대신 장고의 기본 이스케이프 기능을 사용하세요."
         ],
         
         # 3. File Upload
         [
-            "File upload",
+            "File upload", 
             prefix + r".*?(?:request\.FILES\.(get|getlist)\b|read\(\)\s*\.\s*decode\()",
             "파일 확장자 검증을 도입하고, 파일 내용을 템플릿에 직접 노출하지 마세요."
         ],
 
         # 4. CSRF & Security Settings
         [
-            "CSRF",
+            "CSRF", 
             prefix + rf".*?(?:@csrf_exempt\b|{py_cmt}.*CsrfViewMiddleware|DEBUG\s*=\s*True|ALLOWED_HOSTS\s*=\s*\[['\"]\*['\"]\])",
             "보안 미들웨어를 활성화하고, 배포 시 DEBUG와 ALLOWED_HOSTS 설정을 점검하세요."
         ]
