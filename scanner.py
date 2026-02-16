@@ -15,7 +15,10 @@ try:
         #os.walk를 사용해서 폴더 내부 구조를 탐색
         #rules.py 적용 X -> 나중에 수정 해야 됨.
         for (path, dir, files) in os.walk(root_path):
-
+        
+            if any(ex in path for ex in ['venv', '.venv', '.git', '__pycache__']):
+                continue
+        
             #파일 이름이 .py로 끝나는지 검사
             #맞으면 리스트에 저장.
             for file in files: 
