@@ -13,10 +13,9 @@ try:
         file_list = []
 
         #os.walk를 사용해서 폴더 내부 구조를 탐색
-        #rules.py 적용 X -> 나중에 수정 해야 됨.
         for (path, dir, files) in os.walk(root_path):
 
-            #파일 이름이 .py로 끝나는지 검사
+            #파일 이름이 .py or .html로 끝나는지 검사
             #맞으면 리스트에 저장.
             for file in files: 
                 if file.endswith(".py") or file.endswith(".html"):
@@ -34,7 +33,6 @@ try:
     def read_file_code(file_list, detection_rules):
 
         #리턴할 취약점을 담은 리스트
-        #형식은 [취약점, 파일 이름, 자세한 위치, 이유]
         list_data = []
 
         
@@ -47,7 +45,6 @@ try:
             with open(full_path, 'r', encoding="utf-8") as f:
                 
                 #한 줄씩 보고 규칙에 맞는 게 있는지 확인.
-                #규칙 적용 X 나중에 해야 함.
                 for (line_number, line) in enumerate(f, 1):
 
                     #공백/줄바꿈 문자 제거
