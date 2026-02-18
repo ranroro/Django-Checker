@@ -38,7 +38,6 @@ try:
         
         for (path, file) in file_list:
             #경로와 파일 이름 합치기
-            #나중에 괜찮다면 [path, file]를 저장하지 말고, full_path를 저장하는 것도 괜찮을 듯.
             full_path = os.path.join(path, file)
 
             #with open쓰면 마지막에 안 닫아도(close()) 된다고해서 이걸로 썼습니다.
@@ -50,7 +49,6 @@ try:
                     #공백/줄바꿈 문자 제거
                     clean_line = line.rstrip()
 
-                
 
                     #[취약점, 파일이름, 줄번호, 코드, 전체 위치, 조치권고]
 
