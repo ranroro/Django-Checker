@@ -55,7 +55,7 @@ try:
 
                 
 
-                    #취약점, 파일이름, 줄번호, 코드, 전체 위치, 조치권고
+                    #[취약점, 파일이름, 줄번호, 코드, 전체 위치, 조치권고]
 
                     #sql Injection
                     if re.search(detection_rules[0][1], clean_line):
