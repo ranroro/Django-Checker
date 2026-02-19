@@ -13,13 +13,12 @@ try:
         file_list = []
 
         #os.walk를 사용해서 폴더 내부 구조를 탐색
-        #rules.py 적용 X -> 나중에 수정 해야 됨.
         for (path, dir, files) in os.walk(root_path):
         
             if any(ex in path for ex in ['venv', '.venv', '.git', '__pycache__']):
                 continue
         
-            #파일 이름이 .py로 끝나는지 검사
+            #파일 이름이 .py or .html로 끝나는지 검사
             #맞으면 리스트에 저장.
             for file in files: 
                 if file.endswith(".py") or file.endswith(".html"):
@@ -37,28 +36,24 @@ try:
     def read_file_code(file_list, detection_rules):
 
         #리턴할 취약점을 담은 리스트
-        #형식은 [취약점, 파일 이름, 자세한 위치, 이유]
         list_data = []
 
         
         for (path, file) in file_list:
             #경로와 파일 이름 합치기
-            #나중에 괜찮다면 [path, file]를 저장하지 말고, full_path를 저장하는 것도 괜찮을 듯.
             full_path = os.path.join(path, file)
 
             #with open쓰면 마지막에 안 닫아도(close()) 된다고해서 이걸로 썼습니다.
             with open(full_path, 'r', encoding="utf-8") as f:
                 
                 #한 줄씩 보고 규칙에 맞는 게 있는지 확인.
-                #규칙 적용 X 나중에 해야 함.
                 for (line_number, line) in enumerate(f, 1):
 
                     #공백/줄바꿈 문자 제거
                     clean_line = line.rstrip()
 
-                
 
-                    #취약점, 파일이름, 줄번호, 코드, 전체 위치, 조치권고
+                    #[취약점, 파일이름, 줄번호, 코드, 전체 위치, 조치권고]
 
                     #sql Injection
                     if re.search(detection_rules[0][1], clean_line):
