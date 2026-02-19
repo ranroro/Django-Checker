@@ -50,7 +50,7 @@ try:
                 for (line_number, line) in enumerate(f, 1):
 
                     #공백/줄바꿈 문자 제거
-                    clean_line = line.rstrip()
+                    clean_line = line.strip()
 
 
                     #[취약점, 파일이름, 줄번호, 코드, 전체 위치, 조치권고]

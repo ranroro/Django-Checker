@@ -27,7 +27,7 @@ def get_rules():
         # 3. File Upload
         [
             "File upload", 
-            prefix + r".*?(?:request\.FILES\.(get|getlist)\b|read\(\)\s*\.\s*decode\()",
+            prefix + r".*?(?:request\.FILES\.(get|getlist)\b|read(?:\(\))?\s*\.\s*decode(?:\(\))?)",
             "파일 확장자 검증을 도입하고, 파일 내용을 템플릿에 직접 노출하지 마세요."
         ],
 
